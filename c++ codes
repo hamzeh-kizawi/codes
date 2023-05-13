@@ -1,0 +1,242 @@
+merge sort
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+void merge(std::vector<int>& arr, std::vector<int>& left, std::vector<int>& right) {
+    int i = 0, j = 0, k = 0;
+
+    while (i < left.size() && j < right.size()) {
+        if (left[i] <= right[j])
+            arr[k++] = left[i++];
+        else
+            arr[k++] = right[j++];
+    }
+
+    while (i < left.size())
+        arr[k++] = left[i++];
+    
+    while (j < right.size())
+        arr[k++] = right[j++];
+}
+
+void mergeSort(std::vector<int>& arr) {
+    if (arr.size() <= 1)
+        return;
+
+    int mid = arr.size() / 2;
+    std::vector<int> left(arr.begin(), arr.begin() + mid);
+    std::vector<int> right(arr.begin() + mid, arr.end());
+
+    mergeSort(left);
+    mergeSort(right);
+    merge(arr, left, right);
+}
+
+int main() {
+    int size;
+    std::cout << "Enter the number of elements to sort: ";
+    std::cin >> size;
+
+    std::vector<int> arr(size);
+
+    std::cout << "Enter " << size << " integers: ";
+    for (int i = 0; i < size; ++i)
+        std::cin >> arr[i];
+
+    std::cout << "\nOriginal array:\n";
+    for (int i = 0; i < size; ++i)
+        std::cout << arr[i] << " ";
+
+    
+    auto start = std::chrono::steady_clock::now();
+
+    mergeSort(arr);
+
+    
+    auto end = std::chrono::steady_clock::now();
+
+    std::cout << "\n\nSorted array:\n";
+    for (int i = 0; i < size; ++i)
+        std::cout << arr[i] << " ";
+
+    
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "\n\nExecution time: " << duration.count() << " milliseconds." << std::endl;
+
+    return 0;
+}
+bubble sort
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+void bubbleSort(std::vector<int>& arr) {
+    int n = arr.size();
+    bool swapped;
+
+    for (int i = 0; i < n - 1; ++i) {
+        swapped = false;
+
+        for (int j = 0; j < n - i - 1; ++j) {
+            if (arr[j] > arr[j + 1]) {
+                std::swap(arr[j], arr[j + 1]);
+                swapped = true;
+            }
+        }
+
+        if (!swapped)
+            break;
+    }
+}
+
+int main() {
+    int size;
+    std::cout << "Enter the number of elements to sort: ";
+    std::cin >> size;
+
+    std::vector<int> arr(size);
+
+    std::cout << "Enter " << size << " integers: ";
+    for (int i = 0; i < size; ++i)
+        std::cin >> arr[i];
+
+    std::cout << "\nOriginal array:\n";
+    for (int i = 0; i < size; ++i)
+        std::cout << arr[i] << " ";
+
+    
+    auto start = std::chrono::steady_clock::now();
+
+    bubbleSort(arr);
+
+    
+    auto end = std::chrono::steady_clock::now();
+
+    std::cout << "\n\nSorted array:\n";
+    for (int i = 0; i < size; ++i)
+        std::cout << arr[i] << " ";
+
+    
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "\n\nExecution time: " << duration.count() << " milliseconds." << std::endl;
+
+    return 0;
+}
+
+quick sort
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+int partition(std::vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; ++j) {
+        if (arr[j] <= pivot) {
+            ++i;
+            std::swap(arr[i], arr[j]);
+        }
+    }
+
+    std::swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(std::vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int size;
+    std::cout << "Enter the number of elements to sort: ";
+    std::cin >> size;
+
+    std::vector<int> arr(size);
+
+    std::cout << "Enter " << size << " integers: ";
+    for (int i = 0; i < size; ++i)
+        std::cin >> arr[i];
+
+    std::cout << "\nOriginal array:\n";
+    for (int i = 0; i < size; ++i)
+        std::cout << arr[i] << " ";
+
+    
+    auto start = std::chrono::steady_clock::now();
+
+    quickSort(arr, 0, size - 1);
+
+    
+    auto end = std::chrono::steady_clock::now();
+
+    std::cout << "\n\nSorted array:\n";
+    for (int i = 0; i < size; ++i)
+        std::cout << arr[i] << " ";
+
+    
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "\n\nExecution time: " << duration.count() << " milliseconds." << std::endl;
+
+    return 0;
+}
+insertion sort
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+void insertionSort(std::vector<int>& arr) {
+    int n = arr.size();
+
+    for (int i = 1; i < n; ++i) {
+        int key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            --j;
+        }
+
+        arr[j + 1] = key;
+    }
+}
+
+int main() {
+    int size;
+    std::cout << "Enter the number of elements to sort: ";
+    std::cin >> size;
+
+    std::vector<int> arr(size);
+
+    std::cout << "Enter " << size << " integers: ";
+    for (int i = 0; i < size; ++i)
+        std::cin >> arr[i];
+
+    std::cout << "\nOriginal array:\n";
+    for (int i = 0; i < size; ++i)
+        std::cout << arr[i] << " ";
+
+    
+    auto start = std::chrono::steady_clock::now();
+
+    insertionSort(arr);
+
+    
+    auto end = std::chrono::steady_clock::now();
+
+    std::cout << "\n\nSorted array:\n";
+    for (int i = 0; i < size; ++i)
+        std::cout << arr[i] << " ";
+
+    
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "\n\nExecution time: " << duration.count() << " milliseconds." << std::endl;
+
+    return 0;
+}
